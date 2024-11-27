@@ -1,6 +1,6 @@
 public class LoanCalc {
 
-    static double epsilon = 1.0;  
+    static double epsilon = 0.01; 
     static int iterationCounter;
 
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class LoanCalc {
         double payment = 0;
         iterationCounter = 0;
 
-        while (endBalance(loan, rate, n, payment) > 0) {
+        while (Math.abs(endBalance(loan, rate, n, payment)) > epsilon) {
             payment += epsilon;
             iterationCounter++;
         }
@@ -50,7 +50,9 @@ public class LoanCalc {
             payment = (low + high) / 2;
             double balance = endBalance(loan, rate, n, payment);
 
-            if (balance > 0) {
+            if (Math.abs(balance) < epsilon) {
+                break;
+            } else if (balance > 0) {
                 low = payment;
             } else {
                 high = payment;
@@ -59,6 +61,6 @@ public class LoanCalc {
             iterationCounter++;
         }
 
-        return (low + high) / 2;
+        return payment;
     }
 }

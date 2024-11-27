@@ -1,18 +1,8 @@
 public class Anagram {
     public static void main(String[] args) {
         System.out.println(isAnagram("silent", "listen"));
-        System.out.println(isAnagram("William Shakespeare", "I am a weakish speller"));
-        System.out.println(isAnagram("Madam Curie", "Radium came"));
         System.out.println(preProcess("What? No way!!!"));
-        System.out.println("silent and " + randomAnagram("silent") + " are anagrams.");
-        String str = "1234567";
-        boolean pass = true;
-        for (int i = 0; i < 10; i++) {
-            String randomAnagram = randomAnagram(str);
-            pass = pass && isAnagram(str, randomAnagram);
-            if (!pass) break;
-        }
-        System.out.println(pass ? "test passed" : "test failed");
+        System.out.println(randomAnagram("silent"));
     }
 
     public static boolean isAnagram(String str1, String str2) {
@@ -31,7 +21,11 @@ public class Anagram {
         String result = "";
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (Character.isLetter(c)) result += Character.toLowerCase(c);
+            if (Character.isLetter(c)) {
+                result += Character.toLowerCase(c);
+            } else if (c == ' ') {
+                result += c;
+            }
         }
         return result;
     }

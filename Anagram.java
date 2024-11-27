@@ -3,7 +3,6 @@ public class Anagram {
         System.out.println(isAnagram("silent", "listen"));
         System.out.println(isAnagram("William Shakespeare", "I am a weakish speller"));
         System.out.println(isAnagram("Madam Curie", "Radium came"));
-        System.out.println(isAnagram("Tom Marvolo Riddle", "I am Lord Voldemort"));
         System.out.println(preProcess("What? No way!!!"));
         System.out.println(randomAnagram("silent"));
     }
@@ -30,7 +29,11 @@ public class Anagram {
         String result = "";
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (Character.isLetter(c)) result += Character.toLowerCase(c);
+            if (Character.isLetter(c)) {
+                result += Character.toLowerCase(c);
+            } else if (c == ' ') {
+                result += c;
+            }
         }
         return result;
     }

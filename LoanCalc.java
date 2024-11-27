@@ -1,6 +1,6 @@
 public class LoanCalc {
 
-    static double epsilon = 0.001;
+    static double epsilon = 1.0;  
     static int iterationCounter;
 
     public static void main(String[] args) {
@@ -31,10 +31,12 @@ public class LoanCalc {
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
         double payment = 0;
         iterationCounter = 0;
+
         while (endBalance(loan, rate, n, payment) > 0) {
             payment += epsilon;
             iterationCounter++;
         }
+
         return payment;
     }
 
@@ -53,6 +55,7 @@ public class LoanCalc {
             } else {
                 high = payment;
             }
+
             iterationCounter++;
         }
 

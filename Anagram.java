@@ -1,14 +1,14 @@
 public class Anagram {
     public static void main(String[] args) {
-        System.out.println(isAnagram("silent", "listen"));  
+        System.out.println(isAnagram("silent", "listen")); 
         System.out.println(isAnagram("William Shakespeare", "I am a weakish speller")); 
-        System.out.println(isAnagram("Madam Curie", "Radium came")); // true
-        System.out.println(isAnagram("Tom Marvolo Riddle", "I am Lord Voldemort")); 
+        System.out.println(randomAnagram("silent")); 
     }
 
     public static boolean isAnagram(String str1, String str2) {
         str1 = preProcess(str1);
         str2 = preProcess(str2);
+
         if (str1.length() != str2.length()) return false;
 
         int[] charCounts = new int[26];
@@ -33,5 +33,16 @@ public class Anagram {
             }
         }
         return result;
+    }
+
+    public static String randomAnagram(String str) {
+        char[] chars = str.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            int randomIndex = (int) (Math.random() * chars.length);
+            char temp = chars[i];
+            chars[i] = chars[randomIndex];
+            chars[randomIndex] = temp;
+        }
+        return new String(chars);
     }
 }

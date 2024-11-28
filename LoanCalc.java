@@ -21,21 +21,22 @@ public class LoanCalc {
 
     private static double endBalance(double loan, double rate, int n, double payment) {
         double balance = loan;
+        double monthlyRate = rate / 100 / 12;
         for (int i = 0; i < n; i++) {
-            balance += balance * (rate / 100 / 12); 
+            balance += balance * monthlyRate;
             balance -= payment;
         }
         return balance;
     }
 
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
-        double payment = loan / n; // Estimation initiale
+        double payment = loan / n;
         iterationCounter = 0;
 
         while (endBalance(loan, rate, n, payment) > 0) {
             payment += epsilon;
             iterationCounter++;
-            if (iterationCounter > 1e7) break; 
+            if (iterationCounter > 1e7) break;
         }
 
         return payment;
@@ -43,7 +44,8 @@ public class LoanCalc {
 
     public static double bisectionSolver(double loan, double rate, int n, double epsilon) {
         double low = 0;
-        double high = loan * (1 + rate / 100);
+        double high = loan;
+        double monthlyRate = rate / 100 / 12;
         double payment = 0;
         iterationCounter = 0;
 
@@ -57,7 +59,6 @@ public class LoanCalc {
                 high = payment;
             }
             iterationCounter++;
-            if (iterationCounter > 100) break; 
         }
 
         return (low + high) / 2;

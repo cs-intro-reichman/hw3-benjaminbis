@@ -1,48 +1,54 @@
 public class Anagram {
-    public static void main(String[] args) {
-        System.out.println(isAnagram("silent", "listen")); 
-        System.out.println(isAnagram("William Shakespeare", "I am a weakish speller")); 
-        System.out.println(randomAnagram("silent")); 
+
+    public static String preProcess(String str) {
+        return str.replaceAll("[^a-zA-Z ]", "").toLowerCase();
     }
 
     public static boolean isAnagram(String str1, String str2) {
-        str1 = preProcess(str1);
-        str2 = preProcess(str2);
+        str1 = preProcess(str1).replace(" ", "");
+        str2 = preProcess(str2).replace(" ", "");
 
         if (str1.length() != str2.length()) return false;
 
-        int[] charCounts = new int[26];
-        for (int i = 0; i < str1.length(); i++) {
-            charCounts[str1.charAt(i) - 'a']++;
-            charCounts[str2.charAt(i) - 'a']--;
+        while (!str1.isEmpty()) {
+            char c = str1.charAt(0);
+            int index = str2.indexOf(c);
+            if (index == -1) return false;
+            str1 = str1.substring(1);
+            str2 = str2.substring(0, index) + str2.substring(index + 1);
         }
-
-        for (int count : charCounts) {
-            if (count != 0) return false;
-        }
-
         return true;
     }
 
-    public static String preProcess(String str) {
-        String result = "";
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (Character.isLetter(c)) {
-                result += Character.toLowerCase(c);
-            }
+    public static String randomAnagram(String str) {
+        str = preProcess(str);
+        StringBuilder result = new StringBuilder(str);
+
+        for (int i = result.length() - 1; i > 0; i--) {
+            int j = customRandom(0, i + 1);
+            char temp = result.charAt(i);
+            result.setCharAt(i, result.charAt(j));
+            result.setCharAt(j, temp);
         }
-        return result;
+        return result.toString();
     }
 
-    public static String randomAnagram(String str) {
-        char[] chars = str.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            int randomIndex = (int) (Math.random() * chars.length);
-            char temp = chars[i];
-            chars[i] = chars[randomIndex];
-            chars[randomIndex] = temp;
-        }
-        return new String(chars);
+    private static int customRandom(int min, int max) {
+        long currentTime = System.nanoTime();
+        return (int) ((currentTime % (max - min)) + min);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(preProcess("Nag a Ram!"));
+        System.out.println(preProcess("Hello   World!"));
+        System.out.println(preProcess("ABCdef"));
+        System.out.println(preProcess(""));
+
+        System.out.println(isAnagram("listen", "silent"));
+        System.out.println(isAnagram("hello", "world"));
+        System.out.println(isAnagram("Nag a Ram", "anagram"));
+
+        System.out.println(randomAnagram("java"));
+        System.out.println(randomAnagram("hello world"));
     }
 }
